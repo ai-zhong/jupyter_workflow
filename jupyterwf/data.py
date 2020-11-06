@@ -27,7 +27,11 @@ def get_fremont_data(filename='Fremont.csv', url=FREMONT_URL, force_download=Fal
         urlretrieve(URL, 'Fremont.csv')
     
     # parse_dates took long here since we didn't specify datetime format
-    data = pd.read_csv('Fremont.csv', index_col='Date', parse_dates=True)
+    data = pd.read_csv('Fremont.csv', index_col='Date')
+    try:
+        data.index = pd.to_datetime(data.index, format='%m/%d/%Y %I:%M:%S %p')
+    except:
+        data.index = pd.to_datetime(data.index)
     data.columns=['Total', 'East', 'West']
     
     return data
